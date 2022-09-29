@@ -15,7 +15,19 @@ return new class extends Migration
     {
         Schema::create('detail_pengiriman', function (Blueprint $table) {
             $table->id();
+            $table->char('pengiriman_id', 15);
+            $table->char('barang_gudang_produksi_id', 18);
+            $table->integer('jumlah_pengiriman');
+            $table->string('catatan');
             $table->timestamps();
+
+            $table->foreign('pengiriman_id')
+                ->references('pengiriman_id')
+                ->on('pengiriman')->onDelete('cascade');
+
+            $table->foreign('barang_gudang_produksi_id')
+                ->references('barang_gudang_produksi_id')
+                ->on('barang_gudang_produksi')->onDelete('cascade');
         });
     }
 

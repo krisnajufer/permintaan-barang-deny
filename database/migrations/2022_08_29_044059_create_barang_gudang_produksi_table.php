@@ -17,7 +17,7 @@ return new class extends Migration
             $table->char('barang_gudang_produksi_id', 8);
             $table->primary('barang_gudang_produksi_id');
             $table->string('slug');
-            $table->char('gudang_produksi_id', 5);
+            $table->char('gudang_produksi_id', 6);
             $table->string('nama_barang')->unique();
             $table->timestamps();
 

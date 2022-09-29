@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('gudang', function (Blueprint $table) {
             $table->char('gudang_id', 5);
             $table->primary('gudang_id');
+            $table->string('slug');
             $table->char('user_id', 5)->unique();
             $table->text('alamat_gudang');
             $table->timestamps();

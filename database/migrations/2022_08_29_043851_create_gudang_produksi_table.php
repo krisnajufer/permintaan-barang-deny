@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('gudang_produksi', function (Blueprint $table) {
-            $table->char('gudang_produksi_id', 5);
+            $table->char('gudang_produksi_id', 6);
             $table->primary('gudang_produksi_id');
+            $table->string('slug');
             $table->char('user_id', 5)->unique();
             $table->text('alamat_gudang_produksi');
             $table->timestamps();
