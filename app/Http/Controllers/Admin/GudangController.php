@@ -55,7 +55,7 @@ class GudangController extends Controller
         if ($user_role == 'admin') {
             return view('admin.pages.gudang.create');
         } else {
-            echo "not found";
+            return view('admin.pages.NotFound');
         }
     }
 
@@ -160,20 +160,25 @@ class GudangController extends Controller
 
     public function edit($slug, $role)
     {
-        if ($role == 'produksi') {
-            $gudangs = DB::table('gudang_produksi')
-                ->join('users as u', 'gudang_produksi.user_id', '=', 'u.user_id')
-                ->select('gudang_produksi.gudang_produksi_id as gudang_id', 'u.nama', 'gudang_produksi.slug as slug_gudang', 'u.slug as slug_user', 'gudang_produksi.alamat_gudang_produksi as alamat', 'u.username', 'u.role', 'u.password')
-                ->where(['u.role' => 'produksi', 'gudang_produksi.slug' => $slug])
-                ->first();
+        $user_role = $this->userRole();
+        if ($user_role == 'admin') {
+            if ($role == 'produksi') {
+                $gudangs = DB::table('gudang_produksi')
+                    ->join('users as u', 'gudang_produksi.user_id', '=', 'u.user_id')
+                    ->select('gudang_produksi.gudang_produksi_id as gudang_id', 'u.nama', 'gudang_produksi.slug as slug_gudang', 'u.slug as slug_user', 'gudang_produksi.alamat_gudang_produksi as alamat', 'u.username', 'u.role', 'u.password')
+                    ->where(['u.role' => 'produksi', 'gudang_produksi.slug' => $slug])
+                    ->first();
+            } else {
+                $gudangs = DB::table('gudang')
+                    ->join('users as u', 'gudang.user_id', '=', 'u.user_id')
+                    ->select('gudang.gudang_id as gudang_id', 'u.nama', 'gudang.slug as slug_gudang', 'u.slug as slug_user', 'gudang.alamat_gudang as alamat', 'u.username', 'u.role', 'u.password')
+                    ->where(['u.role' => 'nonproduksi', 'gudang.slug' => $slug])
+                    ->first();
+            }
+            return view('admin.pages.gudang.edit', compact('gudangs'));
         } else {
-            $gudangs = DB::table('gudang')
-                ->join('users as u', 'gudang.user_id', '=', 'u.user_id')
-                ->select('gudang.gudang_id as gudang_id', 'u.nama', 'gudang.slug as slug_gudang', 'u.slug as slug_user', 'gudang.alamat_gudang as alamat', 'u.username', 'u.role', 'u.password')
-                ->where(['u.role' => 'nonproduksi', 'gudang.slug' => $slug])
-                ->first();
+            return view('admin.pages.NotFound');
         }
-        return view('admin.pages.gudang.edit', compact('gudangs'));
     }
 
     public function update(Request $request, $slug, $role)
