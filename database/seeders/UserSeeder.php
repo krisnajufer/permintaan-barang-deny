@@ -19,10 +19,10 @@ class UserSeeder extends Seeder
     {
         $seeds = (object)[
             [
-                "nama" => "Admin",
-                "role" => "admin",
-                "username" => "admin",
-                "password" => bcrypt("admin")
+                "nama" => "Gudang Produksi",
+                "role" => "produksi",
+                "username" => "gudangproduksi",
+                "password" => bcrypt("gudangproduksi")
             ]
         ];
 

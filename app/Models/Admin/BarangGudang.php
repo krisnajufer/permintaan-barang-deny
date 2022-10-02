@@ -21,26 +21,4 @@ class BarangGudang extends Model
     public $incrementing = false;
 
     protected $keyType = 'string';
-
-    public static function generateGudangId()
-    {
-        $barangGudangId = DB::table('barang_gudang')->max('barang_gudang_id');
-        $addZero = '';
-        $barangGudangId = str_replace("BG", "", $barangGudangId);
-        $barangGudangId = (int) $barangGudangId + 1;
-        $incrementBarangGudangId = $barangGudangId;
-
-        if (strlen($barangGudangId) == 1) {
-            $addZero = "0000";
-        } elseif (strlen($barangGudangId) == 2) {
-            $addZero = "000";
-        } elseif (strlen($barangGudangId) == 3) {
-            $addZero = "00";
-        } elseif (strlen($barangGudangId) == 4) {
-            $addZero = "0";
-        }
-
-        $newBarangGudangId = "BG" . $addZero . $incrementBarangGudangId;
-        return $newBarangGudangId;
-    }
 }

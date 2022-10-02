@@ -22,7 +22,7 @@ class BarangGudangProduksi extends Model
 
     protected $keyType = 'string';
 
-    public static function generateGudangId()
+    public static function generateBarangGudangProduksiId()
     {
         $barangGudangProduksiId = DB::table('barang_gudang_produksi')->max('barang_gudang_produksi_id');
         $addZero = '';

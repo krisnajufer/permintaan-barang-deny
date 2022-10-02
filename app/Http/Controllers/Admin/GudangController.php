@@ -42,7 +42,7 @@ class GudangController extends Controller
                 ->select('gudang.gudang_id', 'u.nama', 'gudang.slug as slug_gudang', 'u.slug as slug_user', 'gudang.alamat_gudang as alamat', 'u.username', 'u.role')
                 ->where('u.role', '=', 'nonproduksi')
                 ->get();
-        } elseif ($user_role == 'admin' || $user_role == 'produksi') {
+        } elseif ($user_role == 'produksi') {
             $gudangs = null;
         }
 
@@ -52,7 +52,7 @@ class GudangController extends Controller
     public function create()
     {
         $user_role = $this->userRole();
-        if ($user_role == 'admin') {
+        if ($user_role == 'produksi') {
             return view('admin.pages.gudang.create');
         } else {
             return view('admin.pages.NotFound');
@@ -161,7 +161,7 @@ class GudangController extends Controller
     public function edit($slug, $role)
     {
         $user_role = $this->userRole();
-        if ($user_role == 'admin') {
+        if ($user_role == 'produksi') {
             if ($role == 'produksi') {
                 $gudangs = DB::table('gudang_produksi')
                     ->join('users as u', 'gudang_produksi.user_id', '=', 'u.user_id')

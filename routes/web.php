@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GudangController;
+use App\Http\Controllers\Admin\BarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,11 @@ Route::middleware('user')->group(function () {
         Route::get('/gudang/edit/{slug}/{role}', 'edit');
         Route::post('/gudang/update/{slug}/{role}', 'update')->name('gudang.update');
         Route::get('/gudang/destroy/{slug_gudang}/{slug_user}/{role}', 'destroy');
+    });
+
+    Route::controller(BarangController::class)->group(function () {
+        Route::get('/barang', 'index')->name('barang');
+        Route::post('/barang/get', 'getBarang')->name('barang.get');
     });
     Route::controller(UserAuthController::class)->group(function () {
         Route::get('/logout', 'logout')->name('auth.logout');

@@ -14,20 +14,11 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#barang" aria-expanded="false" aria-controls="barang">
+
+            <a class="nav-link" href="{{ route('barang') }}">
                 <i class="menu-icon mdi mdi-stove"></i>
                 <span class="menu-title">Barang</span>
-                <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="barang">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Gudang
-                            Produksi</a>
-                    </li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Gudang
-                            nonProduksi</a></li>
-                </ul>
-            </div>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false"
