@@ -1,10 +1,8 @@
-<link rel="stylesheet" href="{{ asset('StarAdmin2/assets/vendors/feather/feather.css') }}">
-<link rel="stylesheet" href="{{ asset('StarAdmin2/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
-<link rel="stylesheet" href="{{ asset('StarAdmin2/assets/vendors/ti-icons/css/themify-icons.css') }}">
-<link rel="stylesheet" href="{{ asset('StarAdmin2/assets/vendors/typicons/typicons.css') }}">
-<link rel="stylesheet" href="{{ asset('StarAdmin2/assets/vendors/simple-line-icons/css/simple-line-icons.css') }}">
-<link rel="stylesheet" href="{{ asset('StarAdmin2/assets/vendors/css/vendor.bundle.base.css') }}">
-<link rel="stylesheet" href="{{ asset('StarAdmin2/assets/css/vertical-layout-light/style.css') }}">
+<link href="{{ asset('SBadmin2/assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+<link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+<link href="{{ asset('SBadmin2/assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
 <style>
     .swal-height {
         height: 60vh;

@@ -2,61 +2,69 @@
 <html lang="en">
 
 <head>
-    @include('admin.includes.meta')
-    <title>DENY - Login</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Deny - Login</title>
+
     @include('admin.includes.style')
+
 </head>
 
-<body>
-    <div class="container-scroller">
-        <div class="container-fluid page-body-wrapper full-page-wrapper">
-            <div class="content-wrapper d-flex align-items-center auth px-0">
-                <div class="row w-100 mx-0">
-                    <div class="col-lg-4 mx-auto">
-                        <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-                            @if (session()->has('incorrect'))
-                                <div class="alert alert-danger text-center">
-                                    <p class="h5">{{ session('incorrect') }}</p>
-                                </div>
-                            @endif
-                            <h4>Selamat Datang!</h4>
-                            <h6 class="fw-light">Silahkan masuk untuk melanjutkan</h6>
-                            <form class="pt-3" action="{{ route('auth.login') }}" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <input type="username" name="username"
-                                        class="form-control form-control-lg @error('username') is-invalid @enderror"
-                                        id="username" placeholder="Username">
-                                    @error('username')
-                                        <div class="invalid-feedback">
-                                            Username tidak boleh kosong!!
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                @if (session()->has('incorrect'))
+                                    <div class="alert alert-danger text-center my-2 mx-2">
+                                        <p class="h6">{{ session('incorrect') }}</p>
+                                    </div>
+                                @endif
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    </div>
+                                    <form class="user" method="POST" action="{{ route('auth.login') }}">
+                                        @csrf
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="inputUsername" aria-describedby="usernameHelp"
+                                                placeholder="Masukkan Username..." name="username">
                                         </div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" name="password"
-                                        class="form-control form-control-lg @error('password') is-invalid @enderror"
-                                        id="password" placeholder="Password">
-                                    @error('username')
-                                        <div class="invalid-feedback">
-                                            Password tidak boleh kosong!!
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                id="inputPassword" placeholder="Password" name="password">
                                         </div>
-                                    @enderror
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Login
+                                        </button>
+                                    </form>
                                 </div>
-                                <div class="mt-3">
-                                    <button type="submit"
-                                        class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">MASUK
-                                    </button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
-            <!-- content-wrapper ends -->
+
         </div>
-        <!-- page-body-wrapper ends -->
+
     </div>
+
     @include('admin.includes.script')
     <script>
         $(".alert").fadeTo(3000, 500).slideUp(500, function() {

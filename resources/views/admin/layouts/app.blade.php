@@ -16,31 +16,18 @@
 
 </head>
 
-<body>
-    <div class="container-scroller">
+<body id="page-top">
 
-        {{-- Start of including Navbar --}}
-        @include('admin.includes.navbar')
-        {{-- End of including Navbar --}}
-
-        <div class="container-fluid page-body-wrapper">
-
-            {{-- Start of including Sidebar --}}
-            @include('admin.includes.sidebar')
-            {{-- End of including Sidebar --}}
-
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="row">
-                        @yield('content')
-                    </div>
+    <div id="wrapper">
+        @include('admin.includes.sidebar')
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                @include('admin.includes.navbar')
+                <div class="container-fluid">
+                    @yield('content')
                 </div>
-
-                {{-- Start of including Footer --}}
-                @include('admin.includes.footer')
-                {{-- End of including Footer --}}
-
             </div>
+            @include('admin.includes.footer')
         </div>
     </div>
 

@@ -4,154 +4,155 @@
     Gudang
 @endsection
 
+@push('after-style')
+    <link href="{{ asset('SBadmin2/assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endpush
+
 @push('after-script')
+    <script src="{{ asset('SBadmin2/assets/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('SBadmin2/assets/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script>
-        $(`input[name=options]`).each((i, el) => {
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
+        $(`input[name="options"]`).each((i, el) => {
             $(el).on('change', (e) => {
                 const role = $(e.target).val();
-                fetch("{{ route('gudang.get') }}", {
-                        method: 'POST', // or 'PUT'
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            role: role
-                        }),
-                    })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        len = data.gudangs.length;
-                        if (role == 'produksi') {
-                            $("#tambahGudang").prop("hidden", true);
-                            $("#wrapperOption").removeClass("justify-content-between").addClass(
-                                "justify-content-center");
-                        } else {
-                            $("#tambahGudang").removeAttr("hidden");
-                            $("#wrapperOption").removeClass("justify-content-center").addClass(
-                                "justify-content-between");
-                        }
-                        $("#gudangTable tbody").empty();
-                        if (len > 0) {
-                            for (var i = 0; i < len; i++) {
-                                var rows = "";
-                                var id = data.gudangs[i].gudang_id;
-                                var nama = data.gudangs[i].nama;
-                                var alamat = data.gudangs[i].alamat;
-                                var slug_gudang = data.gudangs[i].slug_gudang;
-                                var role_gudang = data.gudangs[i].role;
-                                var slug_user = data.gudangs[i].slug_user;
-                                if (role == 'produksi') {
-                                    var aksi =
-                                        "<a href='<?php echo url('/gudang/edit/" +slug_gudang +"/"+role_gudang+"'); ?>' class='btn btn-inverse-primary btn-icon-text fw-bold'>" +
-                                        "<i class='ti-pencil-alt btn-icon-prepend'></i>" +
-                                        'Edit' +
-                                        "</a>"
-                                } else {
-                                    var aksi =
-                                        "<a href='<?php echo url('/gudang/edit/" +slug_gudang +"/"+role_gudang+"'); ?>' class='btn btn-inverse-primary btn-icon-text fw-bold'>" +
-                                        "<i class='ti-pencil-alt btn-icon-prepend'></i>" +
-                                        'Edit' +
-                                        "</a>" +
-                                        "<a href='<?php echo url('/gudang/destroy/" +slug_gudang +"/"+slug_user+"/"+role_gudang+"'); ?>' class='btn btn-inverse-danger btn-icon-text fw-bold'>" +
-                                        "<i class='ti-trash btn-icon-prepend'></i>" +
-                                        "Delete" +
-                                        "</a>";
+                var table = $('#dataTable').DataTable();
+                table.clear().draw();
+                if (role == 'produksi') {
+                    fetch("{{ route('gudang.get') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                role: role
+                            }),
+                        })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            len = data.gudangs.length;
+                            $("#tambahGudang").attr("hidden", true);
+                            if (len > 0) {
+                                for (let index = 0; index < len; index++) {
+                                    const id = data.gudangs[index].gudang_id;
+                                    const nama = data.gudangs[index].nama;
+                                    const alamat = data.gudangs[index].alamat;
+                                    const slug_gudang = data.gudangs[index].slug_gudang;
+                                    const role_gudang = data.gudangs[index].role;
+                                    const slug_user = data.gudangs[index].slug_user;
+                                    const aksi =
+                                        '<?php if($user->role == "produksi") { ?> <a class="btn btn-info" href="<?php echo url("/gudang/edit/' +slug_gudang +'/'+role_gudang+'"); ?>"><i class="fas fa-edit"></i><span>Edit</span></a> <?php } ?>'
+                                    table.row.add([
+                                        id,
+                                        nama,
+                                        alamat,
+                                        aksi
+                                    ]).draw(false);
                                 }
-                                rows = "<tr><td>" + id + "</td><td>" + nama + "</td><td>" + alamat +
-                                    "</td><?php if($user_role == 'produksi') { ?><td><div class='d-flex gap-2'>" +
-                                    aksi +
-                                    "</div></td><?php } ?></tr>"
-                                $(rows).appendTo("#gudangTable tbody");
                             }
-
-                        } else {
-                            var rows = "";
-                            rows =
-                                "<tr><td colspan='4' class='text-center'>Nothing data to display</td></tr>"
-                            $(rows).appendTo("#gudangTable tbody");
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            });
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                } else {
+                    fetch("{{ route('gudang.get') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                role: role
+                            }),
+                        })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            len = data.gudangs.length;
+                            $("#tambahGudang").removeAttr("hidden");
+                            if (len > 0) {
+                                for (let index = 0; index < len; index++) {
+                                    const id = data.gudangs[index].gudang_id;
+                                    const nama = data.gudangs[index].nama;
+                                    const alamat = data.gudangs[index].alamat;
+                                    const slug_gudang = data.gudangs[index].slug_gudang;
+                                    const role_gudang = data.gudangs[index].role;
+                                    const slug_user = data.gudangs[index].slug_user;
+                                    const aksi =
+                                        '<?php if($user->role == "produksi") { ?> <a class="btn btn-info" href="<?php echo url("/gudang/edit/' +slug_gudang +'/'+role_gudang+'"); ?>"><i class="fas fa-edit"></i> <span>Edit</span></a> <a class="btn btn-danger" href="<?php echo url("/gudang/destroy/' +slug_gudang +'/'+slug_user+'/'+role_gudang+'"); ?>"><i class="fas fa-trash-alt"></i> <span>Hapus</span></a><?php } ?>'
+                                    table.row.add([
+                                        id,
+                                        nama,
+                                        alamat,
+                                        aksi
+                                    ]).draw(false);
+                                }
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                }
+            })
         });
     </script>
 @endpush
 
 @section('content')
-    <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Gudang
-                    {{ $user_role == 'produksi' ? 'Produksi & nonProduksi' : 'nonProduksi' }}</h4>
-                <p class="card-description">
-                    Informasi Gudang
-                    {{ $user_role == 'produksi' ? 'Produksi & nonProduksi' : 'nonProduksi' }}
-
-                </p>
-                @if ($user_role == 'produksi')
-                    <div class="d-flex justify-content-center" id="wrapperOption">
-                        <div></div>
-                        <div class="btn-group">
-                            <input type="radio" class="btn-check" name="options" id="radio1" autocomplete="off"
-                                value="produksi">
-                            <label class="btn btn-outline-primary" for="radio1">Produksi</label>
-
-                            <input type="radio" class="btn-check" name="options" id="radio2" autocomplete="off"
-                                value="nonproduksi">
-                            <label class="btn btn-outline-primary" for="radio2">nonProduksi</label>
+    <div class="card shadow mb-12">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Gudang
+                {{ $user->role == 'produksi' ? 'Produksi & nonProduksi' : 'nonProduksi' }}</h6>
+        </div>
+        <div class="card-body">
+            @if ($user->role == 'produksi')
+                <div class="row my-4">
+                    <div class="col-md-7 d-flex justify-content-end">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-primary">
+                                <input type="radio" name="options" id="options" value="produksi"
+                                    autocomplete="off">Produksi
+                            </label>
+                            <label class="btn btn-outline-primary">
+                                <input type="radio" name="options" id="options" value="nonproduksi" autocomplete="off">
+                                nonProduksi
+                            </label>
                         </div>
-                        @if ($user_role == 'produksi')
-                            <a href="{{ route('gudang.create') }}" class="btn btn-inverse-success btn-icon-text fw-bold"
-                                id="tambahGudang" hidden>
-                                <i class="ti-plus btn-icon-prepend"></i>
-                                Tambah
-                            </a>
-                        @endif
-
                     </div>
-                @endif
-                <div class="table-responsive mt-5">
-                    <table class="table table-hover" id="gudangTable">
-                        <thead>
-                            <tr>
-                                <th>
-                                    ID Gudang
-                                </th>
-                                <th>
-                                    Nama Gudang
-                                </th>
-                                <th>
-                                    Alamat Gudang
-                                </th>
-                                @if ($user_role == 'produksi')
-                                    <th>
-                                        Aksi
-                                    </th>
-                                @endif
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (!empty($gudangs))
-                                @foreach ($gudangs as $gudang)
-                                    <tr>
-                                        <td class="py-1">
-                                            {{ $gudang->gudang_id }}
-                                        </td>
-                                        <td>
-                                            {{ $gudang->nama }}
-                                        </td>
-                                        <td>
-                                            {{ $gudang->alamat }}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                    <div class="col-md-5 d-flex justify-content-end">
+                        <a href="{{ route('gudang.create') }}" class="btn btn-success" id="tambahGudang" hidden><i
+                                class="fas fa-plus"></i>
+                            <span>Tambah</span></a>
+                    </div>
                 </div>
+            @endif
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="width: 13%;">ID Gudang</th>
+                            <th style="width: 25%;">Nama Gudang</th>
+                            <th style="width: 40%;">Alamat Gudang</th>
+                            @if ($user->role == 'produksi')
+                                <th>Aksi</th>
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!empty($gudangs))
+                            @foreach ($gudangs as $gudang)
+                                <tr>
+                                    <td>{{ $gudang->gudang_id }}</td>
+                                    <td>{{ $gudang->nama }}</td>
+                                    <td>{{ $gudang->alamat }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -4,199 +4,192 @@
     Barang
 @endsection
 
+@push('after-style')
+    <link href="{{ asset('SBadmin2/assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endpush
+
 @push('after-script')
+    <script src="{{ asset('SBadmin2/assets/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('SBadmin2/assets/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script>
-        $(`input[name=options]`).each((i, el) => {
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
+        $(`input[name="options"]`).each((i, el) => {
             $(el).on('change', (e) => {
                 const role = $(e.target).val();
-                fetch("{{ route('barang.get') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            role: role
-                        }),
-                    })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        len = data.barangs.length;
-                        if (role == 'produksi') {
-                            $("#wrapperButton").removeClass("justify-content-center").addClass(
-                                "justify-content-between");
-                            $("#tambahBarang").show();
-                            $("#barangTable").empty();
-                            field =
-                                "<thead><tr><th class='col-md-3'>ID Barang Gudang Produksi</th><th>Gudang</th><th>Nama Barang</th><?php if($users->role == 'produksi') { ?><th>Aksi</th><?php } ?></tr></thead><tbody></tbody>";
-                            $(field).appendTo("#barangTable");
-                            if (len > 0) {
-                                for (var i = 0; i < len; i++) {
-                                    var rows = "";
-                                    var id = data.barangs[i].barang_gudang_id;
-                                    var nama_gudang = data.barangs[i].nama_gudang;
-                                    var nama_barang = data.barangs[i].nama_barang;
-                                    var slug_barang = data.barangs[i].slug_barang;
-                                    var aksi =
-                                        "<a href='<?php echo url('/gudang/edit/" +slug_barang +"'); ?>' class='btn btn-inverse-primary btn-icon-text fw-bold'>" +
-                                        "<i class='ti-pencil-alt btn-icon-prepend'></i>" +
-                                        'Edit' +
-                                        "</a>" +
-                                        "<a href='<?php echo url('/gudang/destroy/" +slug_barang +"'); ?>' class='btn btn-inverse-danger btn-icon-text fw-bold'>" +
-                                        "<i class='ti-trash btn-icon-prepend'></i>" +
-                                        "Delete" +
-                                        "</a>";
-                                    rows = "<tr><td>" + id + "</td><td>" + nama_gudang +
-                                        "</td><td>" +
-                                        nama_barang +
-                                        "</td><?php if($users->role == 'produksi') { ?><td><div class='d-flex gap-2'>" +
-                                        aksi +
-                                        "</div></td><?php } ?></tr>"
-                                    $(rows).appendTo("#barangTable tbody");
-                                }
-                            } else {
-                                var rows = "";
-                                rows =
-                                    "<tr><td colspan='4' class='text-center'>Nothing data to display</td></tr>"
-                                $(rows).appendTo("#gudangTable tbody");
+                var table = $('#dataTable').DataTable();
+                table.clear().draw();
+                if (role == 'produksi') {
+                    table.destroy();
+                    $('#dataTable').empty();
+                    $('#dataTable').DataTable({
+                        columns: [{
+                                title: "ID Barang"
+                            },
+                            {
+                                title: "Nama Barang"
+                            },
+                            {
+                                title: "Nama Gudang"
+                            },
+                            {
+                                title: "Action"
                             }
-                        } else {
-                            $("#wrapperButton").removeClass("justify-content-between").addClass(
-                                "justify-content-center");
-                            $("#tambahBarang").hide();
-                            $("#barangTable").empty();
-                            field =
-                                "<thead><tr><th class='col-md-3'>ID Barang Gudang</th><th>Gudang</th><th>Nama Barang</th><th>Quantity</th><?php if($users->role == 'nonproduksi') { ?><th>Aksi</th><?php } ?></tr></thead><tbody></tbody>";
-                            $(field).appendTo("#barangTable");
-                            if (len > 0) {
-                                for (var i = 0; i < len; i++) {
-                                    var rows = "";
-                                    var id = data.barangs[i].barang_gudang_id;
-                                    var nama_gudang = data.barangs[i].nama_gudang;
-                                    var nama_barang = data.barangs[i].nama_barang;
-                                    var slug_barang = data.barangs[i].slug_barang;
-                                    var quantity = data.barangs[i].quantity;
-                                    var aksi =
-                                        "<a href='<?php echo url('/gudang/edit/" +slug_barang +"'); ?>' class='btn btn-inverse-primary btn-icon-text fw-bold'>" +
-                                        "<i class='ti-pencil-alt btn-icon-prepend'></i>" +
-                                        'Edit' +
-                                        "</a>" +
-                                        "<a href='<?php echo url('/gudang/destroy/" +slug_barang +"'); ?>' class='btn btn-inverse-danger btn-icon-text fw-bold'>" +
-                                        "<i class='ti-trash btn-icon-prepend'></i>" +
-                                        "Delete" +
-                                        "</a>";
-                                    rows = "<tr><td>" + id + "</td><td>" + nama_gudang +
-                                        "</td><td>" +
-                                        nama_barang +
-                                        "</td><td>" + quantity +
-                                        "</td><?php if($users->role == 'nonproduksi') { ?><td><div class='d-flex gap-2'>" +
-                                        aksi +
-                                        "</div></td><?php } ?></tr>"
-                                    $(rows).appendTo("#barangTable tbody");
-                                }
-                            } else {
-                                var rows = "";
-                                rows =
-                                    "<tr><td colspan='4' class='text-center'>Nothing data to display</td></tr>"
-                                $(rows).appendTo("#gudangTable tbody");
-                            }
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
+                        ]
                     });
-            });
+                    table = $('#dataTable').DataTable();
+                    fetch("{{ route('barang.get') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                role: role
+                            }),
+                        })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            len = data.barangs.length;
+                            $("#tambahBarang").removeAttr("hidden");
+                            if (len > 0) {
+                                for (let index = 0; index < len; index++) {
+                                    const id = data.barangs[index].barang_gudang_id;
+                                    const nama_barang = data.barangs[index].nama_barang;
+                                    const nama_gudang = data.barangs[index].nama_gudang;
+                                    const slug_barang = data.barangs[index].slug_barang;
+                                    const aksi =
+                                        '<?php if($user->role == "produksi") { ?> <a class="btn btn-info" href="<?php echo url("/barang/edit/'+slug_barang+'"); ?>"><i class="fas fa-edit"></i><span>Edit</span></a><a class="btn btn-danger mx-1" href="<?php echo url("/barang/destroy/'+slug_barang+'"); ?>"><i class="fas fa-trash-alt"></i> <span>Hapus</span></a> <?php } ?>'
+                                    table.row.add([
+                                        id,
+                                        nama_barang,
+                                        nama_gudang,
+                                        aksi
+                                    ]).draw(false);
+                                }
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                } else {
+                    table.destroy();
+                    $('#dataTable').empty();
+                    $('#dataTable').DataTable({
+                        columns: [{
+                                title: "ID Barang"
+                            },
+                            {
+                                title: "Nama Barang"
+                            },
+                            {
+                                title: "Nama Gudang"
+                            }
+                        ]
+                    });
+                    table = $('#dataTable').DataTable();
+                    fetch("{{ route('barang.get') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                role: role
+                            }),
+                        })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            $("#tambahBarang").attr("hidden", true);
+                            len = data.barangs.length;
+                            if (len > 0) {
+                                for (let index = 0; index < len; index++) {
+                                    const id = data.barangs[index].barang_gudang_id;
+                                    const nama_barang = data.barangs[index].nama_barang;
+                                    const nama_gudang = data.barangs[index].nama_gudang;
+                                    table.row.add([
+                                        id,
+                                        nama_barang,
+                                        nama_gudang
+                                    ]).draw(false);
+                                }
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                }
+            })
         });
     </script>
 @endpush
 
 @section('content')
-    <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Barang
-                    {{ $users->role == 'produksi' ? 'Produksi & nonProduksi' : 'nonProduksi' }}
-                </h4>
-                <p class="card-description">
-                    Informasi Gudang
-                    {{ $users->role == 'produksi' ? 'Produksi & nonProduksi' : 'nonProduksi' }}
-                </p>
-                @if ($users->role == 'produksi')
-                    <div class="d-flex justify-content-between" id="wrapperButton">
-                        <div></div>
-                        <div class="btn-group">
-                            <input type="radio" class="btn-check" name="options" id="radio1" autocomplete="off"
-                                value="produksi">
-                            <label class="btn btn-outline-primary" for="radio1">Produksi</label>
+    <div class="card shadow mb-12">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Barang Gudang
+                {{ $user->role == 'produksi' ? 'Produksi & nonProduksi' : 'nonProduksi' }}</h6>
+        </div>
+        <div class="card-body">
 
-                            <input type="radio" class="btn-check" name="options" id="radio2" autocomplete="off"
-                                value="nonproduksi">
-                            <label class="btn btn-outline-primary" for="radio2">nonProduksi</label>
+            <div class="row my-4">
+                @if ($user->role == 'produksi')
+                    <div class="col-md-7 d-flex justify-content-end">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-primary">
+                                <input type="radio" name="options" id="options" value="produksi"
+                                    autocomplete="off">Produksi
+                            </label>
+                            <label class="btn btn-outline-primary">
+                                <input type="radio" name="options" id="options" value="nonproduksi" autocomplete="off">
+                                nonProduksi
+                            </label>
                         </div>
-                        @if ($users->role == 'produksi')
-                            <a href="{{ route('gudang.create') }}" class="btn btn-inverse-success btn-icon-text fw-bold"
-                                id="tambahBarang">
-                                <i class="ti-plus btn-icon-prepend"></i>
-                                Tambah
-                            </a>
-                        @endif
                     </div>
                 @endif
-                <div class="table-responsive mt-5">
-                    <table class="table table-hover" id="barangTable">
-                        @if ($users->role == 'nonproduksi')
-                            <thead>
-                                <tr>
-                                    <th>
-                                        ID Barang Gudang
-                                    </th>
-                                    <th>
-                                        Nama Gudang
-                                    </th>
-                                    <th>
-                                        Nama Barang
-                                    </th>
-                                    <th>
-                                        Quantity
-                                    </th>
-                                    <th>
-                                        Aksi
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (!empty($barangs) && count($barangs) != 0)
-                                    @foreach ($barangs as $barang)
-                                        <tr>
-                                            <td class="py-1">
-                                                {{ $barang->barang_gudang_id }}
-                                            </td>
-                                            <td>
-                                                {{ $barang->nama_gudang }}
-                                            </td>
-                                            <td>
-                                                {{ $barang->nama_barang }}
-                                            </td>
-                                            <td>
-                                                {{ $barang->quantity }}
-                                            </td>
-                                            <td>
-                                                <a href="#" class="btn btn-inverse-primary btn-icon-text fw-bold">
-                                                    <i class="ti-pencil-alt btn-icon-prepend"></i>
-                                                    Edit
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="5" class="text-center">Nothing data to display.</td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        @endif
-                    </table>
+                <div class="{{ $user->role == 'produksi' ? 'col-md-5 ' : 'col-md-12 ' }}d-flex justify-content-end">
+                    <a href="{{ route('barang.create') }}" class="btn btn-success" id="tambahBarang"
+                        {{ $user->role == 'produksi' ? 'hidden' : '' }}><i class="fas fa-plus"></i>
+                        <span>Tambah</span></a>
                 </div>
+            </div>
+
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">ID Barang</th>
+                            <th style="width: 25%;">Nama Barang</th>
+                            <th style="width: 20%;">Nama Gudang</th>
+                            <th style="width: 13%;">Stok Barang</th>
+                            <th>Aksi</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!empty($barangs))
+                            @foreach ($barangs as $barang)
+                                <tr>
+                                    <td>{{ $barang->barang_gudang_id }}</td>
+                                    <td>{{ $barang->nama_barang }}</td>
+                                    <td>{{ $barang->nama_gudang }}</td>
+                                    <td>{{ $barang->quantity }}</td>
+                                    <td>
+                                        <a class="btn btn-info" href="{{ url('/barang/edit/' . $barang->slug_barang) }}"><i
+                                                class="fas fa-edit"></i>
+                                            <span>Edit</span></a>
+                                        <a class="btn btn-danger"
+                                            href="{{ url('/barang/destroy/' . $barang->slug_barang) }}"><i
+                                                class="fas fa-trash-alt"></i> <span>Hapus</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

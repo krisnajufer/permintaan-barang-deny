@@ -14,12 +14,13 @@ use Illuminate\Support\Str;
 
 class GudangController extends Controller
 {
-    public function userRole()
+    public function userAuth()
     {
-        $user_role = Auth::guard('user')->user()->role;
+        $user = Auth::guard('user')->user();
 
-        return $user_role;
+        return $user;
     }
+
 
     public function validatorHelper($request)
     {
@@ -35,25 +36,25 @@ class GudangController extends Controller
 
     public function index()
     {
-        $user_role = $this->userRole();
-        if ($user_role == 'nonproduksi') {
+        $user = $this->userAuth();
+        if ($user->role == 'nonproduksi') {
             $gudangs = DB::table('gudang')
                 ->join('users as u', 'gudang.user_id', '=', 'u.user_id')
                 ->select('gudang.gudang_id', 'u.nama', 'gudang.slug as slug_gudang', 'u.slug as slug_user', 'gudang.alamat_gudang as alamat', 'u.username', 'u.role')
                 ->where('u.role', '=', 'nonproduksi')
                 ->get();
-        } elseif ($user_role == 'produksi') {
+        } elseif ($user->role == 'produksi') {
             $gudangs = null;
         }
 
-        return view('admin.pages.gudang.index', compact('gudangs', 'user_role'));
+        return view('admin.pages.gudang.index', compact('gudangs', 'user'));
     }
 
     public function create()
     {
-        $user_role = $this->userRole();
-        if ($user_role == 'produksi') {
-            return view('admin.pages.gudang.create');
+        $user = $this->userAuth();
+        if ($user->role == 'produksi') {
+            return view('admin.pages.gudang.create', compact('user'));
         } else {
             return view('admin.pages.NotFound');
         }
@@ -160,8 +161,8 @@ class GudangController extends Controller
 
     public function edit($slug, $role)
     {
-        $user_role = $this->userRole();
-        if ($user_role == 'produksi') {
+        $user = $this->userAuth();
+        if ($user->role == 'produksi') {
             if ($role == 'produksi') {
                 $gudangs = DB::table('gudang_produksi')
                     ->join('users as u', 'gudang_produksi.user_id', '=', 'u.user_id')
@@ -175,7 +176,7 @@ class GudangController extends Controller
                     ->where(['u.role' => 'nonproduksi', 'gudang.slug' => $slug])
                     ->first();
             }
-            return view('admin.pages.gudang.edit', compact('gudangs'));
+            return view('admin.pages.gudang.edit', compact('gudangs', 'user'));
         } else {
             return view('admin.pages.NotFound');
         }

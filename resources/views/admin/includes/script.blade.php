@@ -1,9 +1,7 @@
-<script src="{{ asset('StarAdmin2/assets/vendors/js/vendor.bundle.base.js') }}"></script>
-<script src="{{ asset('StarAdmin2/assets/js/off-canvas.js') }}"></script>
-<script src="{{ asset('StarAdmin2/assets/js/hoverable-collapse.js') }}"></script>
-<script src="{{ asset('StarAdmin2/assets/js/template.js') }}"></script>
-<script src="{{ asset('StarAdmin2/assets/js/settings.js') }}"></script>
-<script src="{{ asset('StarAdmin2/assets/js/todolist.js') }}"></script>
+<script src="{{ asset('SBadmin2/assets/vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('SBadmin2/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('SBadmin2/assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+<script src="{{ asset('SBadmin2/assets/js/sb-admin-2.min.js') }}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if (session()->has('warning'))
     <script>

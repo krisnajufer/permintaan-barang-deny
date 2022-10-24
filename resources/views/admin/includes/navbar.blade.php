@@ -1,82 +1,34 @@
-<nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
-    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-        <div class="me-3">
-            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
-                <span class="icon-menu"></span>
-            </button>
-        </div>
-        <div>
-            <a class="navbar-brand brand-logo" href="index.html">
-                <img src="images/logo.svg" alt="logo" />
+<!-- Topbar -->
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+    <!-- Sidebar Toggle (Topbar) -->
+    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+        <i class="fa fa-bars"></i>
+    </button>
+
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav ml-auto">
+
+        <div class="topbar-divider d-none d-sm-block"></div>
+
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $user->nama }}</span>
+                <img class="img-profile rounded-circle" src="{{ asset('SBadmin2/assets/img/undraw_profile.svg') }}">
             </a>
-            <a class="navbar-brand brand-logo-mini" href="index.html">
-                <img src="images/logo-mini.svg" alt="logo" />
-            </a>
-        </div>
-    </div>
-    <div class="navbar-menu-wrapper d-flex align-items-top">
-        <ul class="navbar-nav">
-            <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-                <h1 class="welcome-text">Selamat Datang, <span
-                        class="text-black fw-bold">{{ Auth::guard('user')->user()->nama }}</span></h1>
-            </li>
-        </ul>
-        <ul class="navbar-nav ms-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link count-indicator" id="countDropdown" href="#" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <i class="icon-bell"></i>
-                    <span class="count"></span>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ route('auth.logout') }}">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
                 </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
-                    aria-labelledby="countDropdown">
-                    <a class="dropdown-item py-3">
-                        <p class="mb-0 font-weight-medium float-left">You have 7 unread mails </p>
-                        <span class="badge badge-pill badge-primary float-right">View all</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <img src="images/faces/face10.jpg" alt="image" class="img-sm profile-pic">
-                        </div>
-                        <div class="preview-item-content flex-grow py-2">
-                            <p class="preview-subject ellipsis font-weight-medium text-dark">Marian Garner </p>
-                            <p class="fw-light small-text mb-0"> The meeting is cancelled </p>
-                        </div>
-                    </a>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <img src="images/faces/face12.jpg" alt="image" class="img-sm profile-pic">
-                        </div>
-                        <div class="preview-item-content flex-grow py-2">
-                            <p class="preview-subject ellipsis font-weight-medium text-dark">David Grey </p>
-                            <p class="fw-light small-text mb-0"> The meeting is cancelled </p>
-                        </div>
-                    </a>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <img src="images/faces/face1.jpg" alt="image" class="img-sm profile-pic">
-                        </div>
-                        <div class="preview-item-content flex-grow py-2">
-                            <p class="preview-subject ellipsis font-weight-medium text-dark">Travis Jenkins </p>
-                            <p class="fw-light small-text mb-0"> The meeting is cancelled </p>
-                        </div>
-                    </a>
-                </div>
-            </li>
-            <li class="nav-item dropdown d-none d-lg-block user-dropdown">
-                <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="mdi mdi-account-circle"></i>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                        <a href="{{ route('auth.logout') }}" class="dropdown-item"><i
-                                class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign
-                            Out</a>
-                    </div>
-            </li>
-        </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-            data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
-    </div>
+            </div>
+        </li>
+
+    </ul>
+
 </nav>
+<!-- End of Topbar -->

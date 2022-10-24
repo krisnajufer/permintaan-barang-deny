@@ -53,6 +53,11 @@ Route::middleware('user')->group(function () {
     Route::controller(BarangController::class)->group(function () {
         Route::get('/barang', 'index')->name('barang');
         Route::post('/barang/get', 'getBarang')->name('barang.get');
+        Route::get('/barang/create', 'create')->name('barang.create');
+        Route::post('/barang/store', 'store')->name('barang.store');
+        Route::get('/barang/edit/{slug}', 'edit');
+        Route::post('/barang/update/{slug}', 'update')->name('barang.update');
+        Route::get('/barang/destroy/{slug}', 'destroy');
     });
     Route::controller(UserAuthController::class)->group(function () {
         Route::get('/logout', 'logout')->name('auth.logout');
