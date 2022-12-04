@@ -23,6 +23,12 @@ class UserSeeder extends Seeder
                 "role" => "produksi",
                 "username" => "gudangproduksi",
                 "password" => bcrypt("gudangproduksi")
+            ],
+            [
+                "nama" => "Gudang Gubeng",
+                "role" => "nonproduksi",
+                "username" => "gudanggubeng",
+                "password" => bcrypt("gudanggubeng")
             ]
         ];
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GudangController;
 use App\Http\Controllers\Admin\BarangController;
+use App\Http\Controllers\Admin\PermintaanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +60,14 @@ Route::middleware('user')->group(function () {
         Route::post('/barang/update/{slug}', 'update')->name('barang.update');
         Route::get('/barang/destroy/{slug}', 'destroy');
     });
+
     Route::controller(UserAuthController::class)->group(function () {
         Route::get('/logout', 'logout')->name('auth.logout');
+    });
+
+    Route::controller(PermintaanController::class)->group(function () {
+        Route::get('/permintaan', 'index')->name('permintaan');
+        Route::get('/permintaan/create', 'create')->name('permintaan.create');
+        Route::post('/permintaan/store', 'store')->name('permintaan.store');
     });
 });

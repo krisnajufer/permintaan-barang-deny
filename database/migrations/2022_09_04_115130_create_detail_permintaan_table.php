@@ -18,8 +18,6 @@ return new class extends Migration
             $table->char('permintaan_id', 15);
             $table->char('barang_gudang_produksi_id', 8);
             $table->integer('jumlah_permintaan');
-            $table->string('status');
-            $table->string('alasan');
             $table->timestamps();
 
             $table->foreign('permintaan_id')
