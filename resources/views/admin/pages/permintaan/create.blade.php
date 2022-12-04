@@ -20,7 +20,7 @@
                 Swal.fire({
                     icon: 'info',
                     title: 'Oops...',
-                    text: "Tidak ada field yang boleh kosong",
+                    text: "Tidak boleh ada field yang kosong",
                     customClass: 'swal-height'
                 })
             } else {
@@ -59,7 +59,6 @@
             e.preventDefault();
             index = dataPermintaan.findIndex(x => x.bgp_id == e.target.getAttribute('data-barang-delete'));
             dataPermintaan.splice(index, 1);
-            // console.log(dataPermintaan);
             $("#dataTable").DataTable().destroy();
             i = 1;
             $("#dataTable").DataTable({
@@ -87,33 +86,42 @@
 
         function storeListPermintaan(e) {
             e.preventDefault();
-            permintaan_id = "{{ $permintaan_id }}";
-            data_permintaan = JSON.stringify(dataPermintaan);
-            fetch("{{ route('permintaan.store') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        permintaan: data_permintaan,
-                        id_permintaan: permintaan_id
-                    }),
+            if (dataPermintaan.length == 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Oops...',
+                    text: "List permintaan tidak boleh kosong",
+                    customClass: 'swal-height'
                 })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log("oke" + data);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: "Permintaan berhasil di tambahkan",
-                        customClass: 'swal-height'
+            } else {
+                permintaan_id = "{{ $permintaan_id }}";
+                data_permintaan = JSON.stringify(dataPermintaan);
+                fetch("{{ route('permintaan.store') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            permintaan: data_permintaan,
+                            id_permintaan: permintaan_id
+                        }),
                     })
-                    window.location.href = "{{ route('permintaan') }}";
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log("oke" + data);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: "Permintaan berhasil di tambahkan",
+                            customClass: 'swal-height'
+                        })
+                        window.location.href = "{{ route('permintaan') }}";
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
         }
     </script>
 @endpush
@@ -138,6 +146,7 @@
                     <label for="nama">Jumlah Barang</label>
                     <input type="text" name="quantity" id="quantity" class="form-control">
                 </div>
+                <a href="{{ route('permintaan') }}" class="btn btn-secondary">Kembali</a>
                 <button type="submit" class="btn btn-primary">Tambah</button>
             </form>
         </div>

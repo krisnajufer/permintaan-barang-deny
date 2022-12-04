@@ -69,5 +69,6 @@ Route::middleware('user')->group(function () {
         Route::get('/permintaan', 'index')->name('permintaan');
         Route::get('/permintaan/create', 'create')->name('permintaan.create');
         Route::post('/permintaan/store', 'store')->name('permintaan.store');
+        Route::get('/permintaan/show/{slug}', 'show')->name('permintaan.show');
     });
 });

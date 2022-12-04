@@ -65,4 +65,18 @@ class PermintaanController extends Controller
         }
         return response()->json(array(), 200);
     }
+
+    public function show($slug)
+    {
+        $user = $this->userAuth();
+        $detail_permintaan = DB::table('detail_permintaan as dp')
+            ->join('permintaan as p', 'dp.permintaan_id', '=', 'p.permintaan_id')
+            ->join('barang_gudang_produksi as bgp', 'dp.barang_gudang_produksi_id', '=', 'bgp.barang_gudang_produksi_id')
+            ->where('p.slug', $slug)
+            ->get();
+
+        $permintaan = DB::table('permintaan')->where('slug', $slug)->first();
+
+        return view('admin.pages.permintaan.detail', compact('user', 'detail_permintaan', 'permintaan'));
+    }
 }
