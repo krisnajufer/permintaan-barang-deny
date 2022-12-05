@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug');
             $table->char('permintaan_id', 15);
             $table->date('tanggal_pengiriman');
-            $table->date('tanggal_penerimaan');
+            $table->date('tanggal_penerimaan')->nullable();
             $table->timestamps();
 
             $table->foreign('permintaan_id')

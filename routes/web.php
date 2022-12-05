@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GudangController;
 use App\Http\Controllers\Admin\BarangController;
+use App\Http\Controllers\Admin\PengirimanController;
 use App\Http\Controllers\Admin\PermintaanController;
 
 /*
@@ -70,5 +71,14 @@ Route::middleware('user')->group(function () {
         Route::get('/permintaan/create', 'create')->name('permintaan.create');
         Route::post('/permintaan/store', 'store')->name('permintaan.store');
         Route::get('/permintaan/show/{slug}', 'show')->name('permintaan.show');
+    });
+
+    Route::controller(PengirimanController::class)->group(function () {
+        Route::get('/pengiriman', 'index')->name('pengiriman');
+        Route::get('/pengiriman/create/{pengiriman_id}/{barang_gudang_produksi_id}', 'create')->name('pengiriman.create');
+        Route::post('/pengiriman/temporary', 'temporary')->name('pengiriman.temporary');
+        Route::get('/pengiriman/store/{permintaan_id}', 'store')->name('pengiriman.store');
+        Route::get('/pengiriman/show/{pengiriman_id}', 'show')->name('pengiriman.show');
+        Route::get('/pengiriman/update/{pengiriman_id}', 'update')->name('pengiriman.update');
     });
 });

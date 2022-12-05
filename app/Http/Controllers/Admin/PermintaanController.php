@@ -23,6 +23,9 @@ class PermintaanController extends Controller
     public function index()
     {
         $user = $this->userAuth();
+        if (empty($count_persetujuan)) {
+            $count_persetujuan = [];
+        }
         $permintaans = DB::table('permintaan as p')
             ->join('users as u', 'p.user_id', '=', 'u.user_id')
             ->select('p.permintaan_id', 'p.slug', 'u.nama', 'p.tanggal_permintaan', 'p.status_permintaan')
@@ -41,6 +44,7 @@ class PermintaanController extends Controller
             ->join('users as u', 'g.user_id', '=', 'u.user_id')
             ->select('bg.barang_gudang_id', 'bgp.barang_gudang_produksi_id', 'bgp.nama_barang', 'bg.slug', 'u.nama')
             ->get();
+
         return view('admin.pages.permintaan.create', compact('user', 'barangs', 'permintaan_id'));
     }
 
@@ -68,6 +72,7 @@ class PermintaanController extends Controller
 
     public function show($slug)
     {
+        // session()->forget("temporary_pengiriman");
         $user = $this->userAuth();
         $detail_permintaan = DB::table('detail_permintaan as dp')
             ->join('permintaan as p', 'dp.permintaan_id', '=', 'p.permintaan_id')
@@ -75,8 +80,18 @@ class PermintaanController extends Controller
             ->where('p.slug', $slug)
             ->get();
 
+        $count_detail = DB::table('detail_permintaan as dp')
+            ->join('permintaan as p', 'dp.permintaan_id', '=', 'p.permintaan_id')
+            ->join('barang_gudang_produksi as bgp', 'dp.barang_gudang_produksi_id', '=', 'bgp.barang_gudang_produksi_id')
+            ->where('p.slug', $slug)
+            ->count();
+
         $permintaan = DB::table('permintaan')->where('slug', $slug)->first();
 
-        return view('admin.pages.permintaan.detail', compact('user', 'detail_permintaan', 'permintaan'));
+        $temporary_pengiriman = session("temporary_pengiriman");
+        $tmp = (array) $temporary_pengiriman;
+        $count_temporary = count($tmp);
+
+        return view('admin.pages.permintaan.detail', compact('user', 'detail_permintaan', 'permintaan', 'temporary_pengiriman', 'count_detail', 'count_temporary'));
     }
 }

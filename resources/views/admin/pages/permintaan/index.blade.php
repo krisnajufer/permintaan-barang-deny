@@ -54,9 +54,12 @@
                                     <td>
                                         @if ($permintaan->status_permintaan == 'Pending' and $user->role == 'nonproduksi' or
                                             $permintaan->status_permintaan == 'Proses' and $user->role == 'nonproduksi')
-                                            <a href="" class="btn btn-info">Proses</a>
-                                        @elseif ($permintaan->status_permintaan == 'Dikirim' and $user->role == 'nonproduksi')
-                                            <a href="" class="btn btn-info">Detail</a>
+                                            <a href="{{ route('permintaan.show', ['slug' => $permintaan->slug]) }}"
+                                                class="btn btn-info">Proses</a>
+                                        @elseif ($permintaan->status_permintaan == 'Dikirim' or
+                                            $permintaan->status_permintaan == 'Diterima' and $user->role == 'nonproduksi')
+                                            <a href="{{ route('permintaan.show', ['slug' => $permintaan->slug]) }}"
+                                                class="btn btn-info">Detail</a>
                                         @elseif ($user->role == 'produksi')
                                             <a href="{{ route('permintaan.show', ['slug' => $permintaan->slug]) }}"
                                                 class="btn btn-info">Detail</a>
